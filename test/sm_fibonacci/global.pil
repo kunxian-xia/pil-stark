@@ -1,0 +1,4 @@
+namespace Global(%N);
+    pol constant L1;
+    pol constant LLAST;
+    pol constant BYTE;

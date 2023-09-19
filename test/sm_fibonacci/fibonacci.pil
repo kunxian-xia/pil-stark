@@ -1,11 +1,13 @@
+include "global.pil";
+
 namespace Fibonacci(%N);
 
 
-    pol constant L1, LLAST;
-    pol constant BYTE;
+    pol L1 = Global.L1;
+    pol LLAST = Global.LLAST;
     pol commit l1,l2;
 
-    L1 * l1 in BYTE;
+    L1 * l1 in Global.BYTE;
 
     pol l2c = l2;
 

@@ -22,7 +22,7 @@ async function run() {
 
     const constPols = newConstantPolsArray(pil);
 
-    await smFibonacci.buildConstants(constPols.Fibonacci);
+    await smFibonacci.buildConstants(constPols.Global);
 
     await constPols.saveToFile(outputFile);
 
