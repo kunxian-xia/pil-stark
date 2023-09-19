@@ -8,6 +8,7 @@ module.exports.buildConstants = async function (pols) {
     for ( let i=0; i<N; i++) {
         pols.L1[i] = (i == 0) ? 1n : 0n;
         pols.LLAST[i] = (i == N-1) ? 1n : 0n;
+        pols.BYTE[i] = (i < 256n) ? BigInt(i) : 0n;
     }
 }
 
