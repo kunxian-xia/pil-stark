@@ -122,13 +122,13 @@
  "peCtx": [],
  "ciCtx": [],
  "starkStruct": {
-  "nBits": 10,
-  "nBitsExt": 11,
+  "nBits": 12,
+  "nBitsExt": 13,
   "nQueries": 8,
   "verificationHashType": "GL",
   "steps": [
    {
-    "nBits": 11
+    "nBits": 13
    },
    {
     "nBits": 7
@@ -18544,30 +18544,30 @@
  "qDim": 3,
  "mapOffsets": {
   "cm1_n": 0,
-  "cm2_n": 2048,
-  "cm3_n": 4096,
-  "cm4_n": 10240,
-  "tmpExp_n": 16384,
-  "cm1_2ns": 21504,
-  "cm2_2ns": 25600,
-  "cm3_2ns": 29696,
-  "cm4_2ns": 41984,
-  "q_2ns": 54272,
-  "f_2ns": 60416
+  "cm2_n": 8192,
+  "cm3_n": 16384,
+  "cm4_n": 40960,
+  "tmpExp_n": 65536,
+  "cm1_2ns": 86016,
+  "cm2_2ns": 102400,
+  "cm3_2ns": 118784,
+  "cm4_2ns": 167936,
+  "q_2ns": 217088,
+  "f_2ns": 241664
  },
- "mapTotalN": 66560,
+ "mapTotalN": 266240,
  "mapDeg": {
-  "cm1_n": 1024,
-  "cm2_n": 1024,
-  "cm3_n": 1024,
-  "cm4_n": 1024,
-  "tmpExp_n": 1024,
-  "cm1_2ns": 2048,
-  "cm2_2ns": 2048,
-  "cm3_2ns": 2048,
-  "cm4_2ns": 2048,
-  "q_2ns": 2048,
-  "f_2ns": 2048
+  "cm1_n": 4096,
+  "cm2_n": 4096,
+  "cm3_n": 4096,
+  "cm4_n": 4096,
+  "tmpExp_n": 4096,
+  "cm1_2ns": 8192,
+  "cm2_2ns": 8192,
+  "cm3_2ns": 8192,
+  "cm4_2ns": 8192,
+  "q_2ns": 8192,
+  "f_2ns": 8192
  },
  "publics": [
   {
@@ -18587,7 +18587,7 @@
   {
    "polType": "cmP",
    "polId": 0,
-   "idx": 1023,
+   "idx": 4095,
    "id": 2,
    "name": "out"
   }

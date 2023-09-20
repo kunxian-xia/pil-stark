@@ -37,18 +37,26 @@ namespace Compressor(%N);
     // C[9] -> Qm_23
     // C[10]-> Qc_23
 
+    // a0, a1, a2
+    // c0, c1, c2, c3, c4
     pol a01 = a[0]*a[1];
     pol g012 = C[3]*a01 + C[0]*a[0] + C[1]*a[1] + C[2]*a[2] + C[4];
     g012*GATE = 0;
 
+    // a3, a4, a5
+    // c0, c1, c2, c3, c4
     pol a34 = a[3]*a[4];
     pol g345 = C[3]*a34 + C[0]*a[3] + C[1]*a[4] + C[2]*a[5] + C[4];
     g345*GATE = 0;
 
+    // a6, a7, a8
+    // c6, c7, c8, c9, c10
     pol a67 = a[6]*a[7];
     pol g678 = C[9]*a67 + C[6]*a[6] + C[7]*a[7] + C[8]*a[8] + C[10];
     g678*GATE = 0;
 
+    // a9, a10, a11
+    // c6, c7, c8, c9, c10
     pol a910 = a[9]*a[10];
     pol g91011 = C[9]*a910 + C[6]*a[9] + C[7]*a[10] + C[8]*a[11] + C[10];
     g91011*GATE = 0;
@@ -56,9 +64,9 @@ namespace Compressor(%N);
 
     // POSEIDON12 GATE - Check that a GL Poseidon round is valid
     // Each GL Poseidon round work as follows, given an initial state of 12 elements:
-    // 1- A constant is added to each state element. For example, for the 5th element of the 13th round, 
+    // 1- A constant is added to each state element. For example, for the 5th element of the 13th round,
     // the const[12*13 + 4] = const[160] element is added
-    // 2- In the first 4 and last 4 rounds, each element of the state is raised to the 7th power. 
+    // 2- In the first 4 and last 4 rounds, each element of the state is raised to the 7th power.
     // Additionally this is done for the first element of the state in each round
     // 3- At the end of each round, the state vector is multiplied by the MDS matrix
 <% for (let i=0; i<12; i++) { -%>
@@ -76,7 +84,7 @@ namespace Compressor(%N);
 <%      } -%>
 <% } -%>
 
-    //Whenever POSEIDON12 = 1, check that a' stores the next round of GL Poseidon of a. 
+    //Whenever POSEIDON12 = 1, check that a' stores the next round of GL Poseidon of a.
     // This is done by multiplying the vector (a0_R a1_R ... a11_R a12_R) by the MDS matrix
     POSEIDON12 * (a[0]'  - (25*a0_R + 15*a1_R + 41*a2_R + 16*a3_R +  2*a4_R + 28*a5_R + 13*a6_R + 13*a7_R + 39*a8_R + 18*a9_R + 34*a10_R + 20*a11_R)) = 0;
     POSEIDON12 * (a[1]'  - (20*a0_R + 17*a1_R + 15*a2_R + 41*a3_R + 16*a4_R +  2*a5_R + 28*a6_R + 13*a7_R + 13*a8_R + 39*a9_R + 18*a10_R + 34*a11_R)) = 0;
@@ -92,7 +100,7 @@ namespace Compressor(%N);
     POSEIDON12 * (a[11]' - (15*a0_R + 41*a1_R + 16*a2_R +  2*a3_R + 28*a4_R + 13*a5_R + 13*a6_R + 39*a7_R + 18*a8_R + 34*a9_R + 20*a10_R + 17*a11_R)) = 0;
 
     // CMULADD GATE - Check that a * b + c in Fp³ using (X³ - X - 1) as a generator is performed correctly
-    // In this particular case, 
+    // In this particular case,
     // a = C[9] * [ a[0] + C[0] , a[1] + C[1], a[2] + C[2] ]
     // b = [ a[3] + C[3], a[4] + C[4], a[5] + C[5] ]
     // c = C[10] * [ a[6] + C[6], a[7] + C[7], a[8] + C[8] ]
@@ -110,7 +118,7 @@ namespace Compressor(%N);
     pol c2 = (a[8] + C[8])*C[10];
 
 
-    // Since the modulo is known (X³ - X - 1) we can calculate the coefficients in general form by calculating 
+    // Since the modulo is known (X³ - X - 1) we can calculate the coefficients in general form by calculating
     // (a0 + a1*x + a2*x²)*(b0 + b1*x + b2*x²) and then using long division to get the residue when dividing by the modulo
     // We get the following result: (a0*b0 + a1*b2 + a2*b1) + (a0*b1 + a1*b0 + a1*b2 + a2*b1 + a2*b2)x + (a0*b2 + a2*b2 + a2*b0 + a1*b1)x²
     // This result can be expressed using this intermediate polyonials A,B,C,D,E,F that have less than degree 2
@@ -183,13 +191,13 @@ namespace Compressor(%N);
     return code.join("\n");
 } -%>
 
-    // Calculate acc = d0 * x + d1 
+    // Calculate acc = d0 * x + d1
 <%- CMulAdd("1", "a[0]'", "a[1]'", "a[2]'", "a[3]'", "a[4]'", "a[5]'", "a[9]", "a[10]", "a[11]") -%>
-    // Calculate acc2 = acc * x + d2 
+    // Calculate acc2 = acc * x + d2
 <%- CMulAdd("2", "acc1_0", "acc1_1", "acc1_2", "a[3]'", "a[4]'", "a[5]'", "a[6]", "a[7]", "a[8]") -%>
-    // Calculate acc3 = acc2 * x + d3 
+    // Calculate acc3 = acc2 * x + d3
 <%- CMulAdd("3", "acc2_0", "acc2_1", "acc2_2", "a[3]'", "a[4]'", "a[5]'", "a[3]", "a[4]", "a[5]") -%>
-    // Calculate p = acc4 * x + d4 
+    // Calculate p = acc4 * x + d4
 <%- CMulAdd("4", "acc3_0", "acc3_1", "acc3_2", "a[3]'", "a[4]'", "a[5]'", "a[0]", "a[1]", "a[2]") -%>
 
     // Whenever EVPOL4 = 1, check that the evaluation result matches with the values stored in a[6]', a[7]' and a[8]' respectively
